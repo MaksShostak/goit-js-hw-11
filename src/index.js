@@ -51,7 +51,7 @@ async function onButtonClick(e) {
       position: 'center-top',
     });
   } catch (error) {
-    onError('Something went wrong');
+    onError(`Something went wrong:${error.message}`);
   }
 }
 
@@ -60,7 +60,7 @@ async function onButtonDownloadMorePhotos() {
     const { hits, totalHits } = await servicePixabayApi.getPixabayPhoto();
     renderMarkup(hits, totalHits);
   } catch (error) {
-    onError('Something went wrong');
+    onError(`Something went wrong:${error.message}`);
   }
 }
 
