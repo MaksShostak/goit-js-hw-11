@@ -42,21 +42,26 @@ Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
 }
 input{
+  font-family: cursive;
+  font-size: 25px;
   box-shadow: 10px 5px 5px black;
   padding-left: 6px;
   padding-right: 6px;
   width: 400px;
-  height: 35px;
-  font-size: 16px;
+  height: 50px;
+  
    border-color: crimson;
   border-radius: 4px;
   margin-bottom: 15px;
   background-color: rgba(245, 237, 236, 0.833);
 }
 .submit{
+  font-family: cursive;
+  font-size: 25px;
+  font-weight:600;
   box-shadow: 10px 5px 5px black;
   width: 200px;
-  height: 35px; 
+  height: 50px; 
   border-color: crimson;
   border-radius: 4px;
   background-color: rgba(245, 237, 236, 0.833);
@@ -114,8 +119,10 @@ box-shadow: 10px 5px 5px black;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
+  font-family: cursive;
+    font-size: 25px;
   width: 200px;
-  height: 35px;
+  height: 50px;
   border-color: crimson;
   border-radius: 4px;
   background-color: rgba(245, 237, 236, 0.833);
