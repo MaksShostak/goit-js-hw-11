@@ -69,7 +69,9 @@ function renderMarkup(hits, totalHits) {
   refs.gallery.insertAdjacentHTML('beforeend', FilteredPhoto);
   gallery.refresh();
   servicePixabayApi.totalPhoto = totalHits;
+
   const hasMorePhotos = servicePixabayApi.hasMorePhotos();
+
   if (!hasMorePhotos) {
     refs.loadMore.classList.add('is-hidden');
     Notify.info("We're sorry, but you've reached the end of search results.", {

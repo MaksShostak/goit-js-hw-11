@@ -5,23 +5,23 @@ axios.defaults.params = {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: true,
-  per_page: 150,
+  per_page: 140,
 };
 
 export default class ServicePixabayApi {
   constructor() {
     this.inputSearchQuery = '';
-    this.pageNamber = 1;
-    this.PER_PAGE = 150;
+    this.pageNamber = 0;
+    this.PER_PAGE = 140;
     this.total = 0;
   }
 
   async getPixabayPhoto() {
+    this.addNextPage();
     const { data } = await axios.get(
       `?q=${this.inputSearchQuery}&page=${this.pageNamber}`
     );
 
-    this.addNextPage();
     return data;
   }
   get SearchQuery() {
@@ -41,9 +41,9 @@ export default class ServicePixabayApi {
   }
 
   resetPage() {
-    this.pageNamber = 1;
+    this.pageNamber = 0;
   }
   hasMorePhotos() {
-    return this.pageNamber <= this.total / this.PER_PAGE - 1;
+    return this.pageNamber <= this.total / this.PER_PAGE;
   }
 }
