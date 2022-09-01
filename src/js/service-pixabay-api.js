@@ -5,14 +5,14 @@ axios.defaults.params = {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: true,
-  per_page: 140,
+  per_page: 40,
 };
 
 export default class ServicePixabayApi {
   constructor() {
     this.inputSearchQuery = '';
     this.pageNamber = 0;
-    this.PER_PAGE = 140;
+    this.PER_PAGE = 40;
     this.total = 0;
   }
 
