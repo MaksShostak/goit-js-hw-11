@@ -43,7 +43,7 @@ export default class ServicePixabayApi {
   resetPage() {
     this.pageNamber = 0;
   }
-  hasMorePhotos() {
+  hasNextPage() {
     return this.pageNamber <= this.total / this.PER_PAGE;
   }
 }

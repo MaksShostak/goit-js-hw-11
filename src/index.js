@@ -70,7 +70,7 @@ function renderMarkup(hits, totalHits) {
   gallery.refresh();
   servicePixabayApi.totalPhoto = totalHits;
 
-  const hasMorePhotos = servicePixabayApi.hasMorePhotos();
+  const hasMorePhotos = servicePixabayApi.hasNextPage();
 
   if (!hasMorePhotos) {
     refs.loadMore.classList.add('is-hidden');
