@@ -41,9 +41,10 @@ async function onButtonClick(e) {
     if (hits.length === 0) {
       return onError();
     }
+    refs.loadMore.classList.remove('is-hidden');
 
     renderMarkup(hits, totalHits);
-    refs.loadMore.classList.remove('is-hidden');
+
     Notify.info(`Hooray! We found ${totalHits} images.`, {
       fontSize: '18px',
       timeout: 1000,
