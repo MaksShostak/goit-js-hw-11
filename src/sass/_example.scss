@@ -48,13 +48,16 @@ input{
   
   width: 200px;
   height: 35px;
+  
+  // border: 3px solid crimson;
   border-color: crimson;
   border-radius: 4px;
-  background-color: rgb(203, 164, 251);
+  background-color: rgba(245, 237, 236, 0.833);
   font-weight: 400;
     
 }
 .gallery{
+  margin-top: 15px;
   display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     grid-gap: 20px;
@@ -70,7 +73,10 @@ input{
   // justify-content: space-between;
 }
 .photo-card{
+  margin-top: 15px;
   width: 180px;
+  background-color: #9fb7b74d;
+  color: ghostwhite;
 }
 .info-item{
   text-align: center;
@@ -94,8 +100,10 @@ input{
   height: 35px;
   border-color: crimson;
   border-radius: 4px;
-  background-color: rgb(203, 164, 251);
+  background-color: rgba(245, 237, 236, 0.833);
   }
 
-
+body{
+  background-color: #2f2f37;
+}
 

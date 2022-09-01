@@ -1,3 +1,4 @@
+import { refs } from './js/refs';
 import { createMarkup } from './js/create-markup';
 import ServicePixabayApi from './js/service-pixabay-api';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -10,25 +11,19 @@ let gallery = new SimpleLightbox('.photo-card a', {
 });
 gallery.on('show.simplelightbox');
 
-const refs = {
-  searchForm: document.querySelector('.search-form'),
-  gallery: document.querySelector('.gallery'),
-  loadMore: document.querySelector('.load-more'),
-};
-
 const servicePixabayApi = new ServicePixabayApi();
 
 refs.searchForm.addEventListener('submit', onButtonClick);
 refs.loadMore.addEventListener('click', onButtonDownloadMorePhotos);
 
-function onButtonClick(e) {
+async function onButtonClick(e) {
   e.preventDefault();
   const { searchQuery } = e.target.elements;
   servicePixabayApi.SearchQuery = searchQuery.value.trim();
   servicePixabayApi.resetPage();
 
   if (servicePixabayApi.SearchQuery.length === 0) {
-    return Notify.info('Enter data to search!', {
+    Notify.info('Enter data to search!', {
       backOverlay: true,
       backOverlayColor: 'rgba(255, 85, 73, 0.2)',
       fontSize: '18px',
@@ -36,52 +31,58 @@ function onButtonClick(e) {
       clickToClose: true,
       position: 'center-top',
     });
+    return;
   }
   cleargallery();
   refs.loadMore.classList.add('is-hidden');
 
-  servicePixabayApi
-    .getPixabayPhoto()
-    .then(renderMarkup)
-    .catch(() => onError('Something went wrong'));
+  try {
+    const { hits, totalHits } = await servicePixabayApi.getPixabayPhoto();
+    if (hits.length === 0) {
+      return onError();
+    }
+
+    renderMarkup(hits, totalHits);
+    refs.loadMore.classList.remove('is-hidden');
+    Notify.info(`Hooray! We found ${totalHits} images.`, {
+      fontSize: '18px',
+      timeout: 1000,
+      clickToClose: true,
+      position: 'center-top',
+    });
+  } catch (error) {
+    onError('Something went wrong');
+  }
 }
 
-function renderMarkup({ data: { hits, totalHits } }) {
-  console.log(hits);
-  if (hits.length === 0) {
-    refs.loadMore.classList.add('is-hidden');
-    return onError();
+async function onButtonDownloadMorePhotos() {
+  try {
+    const { hits, totalHits } = await servicePixabayApi.getPixabayPhoto();
+    renderMarkup(hits, totalHits);
+  } catch (error) {
+    onError('Something went wrong');
   }
-  Notify.info(`Hooray! We found ${totalHits} images.`, {
-    fontSize: '18px',
-    timeout: 1000,
-    clickToClose: true,
-    position: 'center-top',
-  });
+}
+
+function renderMarkup(hits, totalHits) {
   const FilteredPhoto = hits.map(createMarkup).join('');
   refs.gallery.insertAdjacentHTML('beforeend', FilteredPhoto);
-  refs.loadMore.classList.remove('is-hidden');
-
   gallery.refresh();
-  const TOTAL_PAGES = totalHits / servicePixabayApi.PER_PAGE;
-  console.log(TOTAL_PAGES);
-  console.log(servicePixabayApi.pageNamber);
-  if (TOTAL_PAGES <= servicePixabayApi.pageNamber - 1) {
+  servicePixabayApi.totalPhoto = totalHits;
+  const hasMorePhotos = servicePixabayApi.hasMorePhotos();
+  if (!hasMorePhotos) {
     refs.loadMore.classList.add('is-hidden');
-    return Notify.info(
-      "We're sorry, but you've reached the end of search results.",
-      {
-        backOverlay: true,
-        backOverlayColor: 'rgba(255, 85, 73, 0.2)',
-        fontSize: '18px',
-        timeout: 2000,
-        clickToClose: true,
-        position: 'center-top',
-      }
-    );
+    Notify.info("We're sorry, but you've reached the end of search results.", {
+      backOverlay: true,
+      backOverlayColor: 'rgba(255, 85, 73, 0.2)',
+      fontSize: '18px',
+      timeout: 2000,
+      clickToClose: true,
+      position: 'center-top',
+    });
+    return;
   }
 }
-
 function onError(message) {
   return Notify.failure(
     message ||
@@ -95,10 +96,6 @@ function onError(message) {
       position: 'center-top',
     }
   );
-}
-
-function onButtonDownloadMorePhotos() {
-  servicePixabayApi.getPixabayPhoto().then(renderMarkup).catch(onError);
 }
 
 function cleargallery() {
